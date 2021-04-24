@@ -1,0 +1,10 @@
+<Alloy>
+	<Window class="container">
+		<View layout="vertical">
+			<Label top="70" width="80%" textAlign="center">Loading the ads now! Note that there may be a several minute delay if you have not viewed an ad in over 24 hours.</Label>
+			<Button top="50" id="interstitialButton" onClick="showInterstitial">Show interstitial ad</Button>
+			<Button top="20" id="rewardedVideoButton" onClick="showRewarded">Show Rewarded Video Ad</Button>
+			<Button top="60" onClick="closeWin">Close</Button>
+		</View>
+	</Window>
+</Alloy>

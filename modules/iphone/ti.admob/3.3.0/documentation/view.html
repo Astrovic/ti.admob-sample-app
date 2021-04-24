@@ -1,0 +1,186 @@
+<h1>Ti.Admob.View</h1>
+
+<h2>Description</h2>
+
+<p>A view for displaying ads delivered through Admob.</p>
+
+<p>You should explicitly size the ad to one of the following predefined sizes (width x height). An appropriate
+ad will be loaded from the server automatically:</p>
+
+<ul><li>320x50</li><li>300x250</li><li>468x60</li><li>728x90</li></ul>
+
+<p>Note: Starting in 2.0.0, you just need to specify a height and an appropriate ad is selected by the Admob SDK.
+See the example.js for more infos.</p>
+
+<h2>Properties</h2>
+
+<h3>string adUnitId</h3>
+
+<p>The ad Unit ID for Admob.</p>
+
+<h3>string adBackgroundColor</h3>
+
+<p>The background color used for the ad.</p>
+
+<h3>Array[String] testDevices</h3>
+
+<p>An array of test device ids. Adding the id of a test device to this array 
+will allow that device to be served test ads. </p>
+
+<p>Use the module constant <code>SIMULATOR_ID</code> to use the simulator as a test device. 
+If you do not know the id for your device, launch your app and request an ad 
+like you normally would, then look in the console for the id. </p>
+
+<p>eg. &lt;Google&gt; To get test ads on this device, set the property <code>debugEnabled</code> to true</p>
+
+<p>Add the id to the array passed to <code>testDevices</code>.</p>
+
+<h3>Date dateOfBirth</h3>
+
+<p><strong>Deprecated as part of the AdMob SDK</strong></p>
+
+<p>A date object representing the user&#39;s date of birth that should be used
+for determining ad delivery. </p>
+
+<h3>string gender</h3>
+
+<p><strong>Deprecated as part of the AdMob SDK</strong></p>
+
+<p>The user&#39;s gender for the purpose of determining ad delivery. This should be one of the constants <code>GENDER_MALE</code>, <code>GENDER_FEMALE</code> or <code>GENDER_UNKNOWN</code>.</p>
+
+<h3>Array[String] keywords</h3>
+
+<p>An array of keywords used to determine ad delivery.</p>
+
+<h3>object location</h3>
+
+<p>A dictionary with the location of the user for location-based ads:</p>
+
+<ul><li>float latitude</li><li>float longitude</li><li>float accuracy</li></ul>
+
+<h3>object extras</h3>
+
+<p>Ad networks may have additional parameters they accept. To pass these parameters to them, create the ad network extras 
+object for that network, fill in the parameters, and register it here. The ad network should have a header defining the 
+interface for the <code>extras</code> object to create. All networks will have access to the basic settings you&#39;ve set in this 
+GADRequest (gender, birthday, testing mode, etc.). If you register an extras object that is the same class as one you have.</p>
+
+<p><strong>Important</strong>: You can pass <code>{ &#39;npa: &#39;1&#39; }</code> to disable personalized ads. This is required to conform to <a href="https://www.eugdpr.org/">GDPR</a>.</p>
+
+<h3>String contentURL</h3>
+
+<p>URL string for a webpage whose content matches the app content. This webpage content is used for targeting purposes.</p>
+
+<h3>String requestAgent</h3>
+
+<p>String that identifies the ad request&#39;s origin. Third party libraries that reference the Mobile. Ads SDK should set this property 
+to denote the platform from which the ad request originated. For example, a third party ad network called &quot;CoolAds network&quot; that 
+is mediating requests to the Mobile Ads SDK should set this property as &quot;CoolAds&quot;.</p>
+
+<h3>Boolean tagForChildDirectedTreatment</h3>
+
+<p>This property allows you to specify whether you would like your app to be treated as child-directed for purposes of the 
+Children&#39;s Online Privacy Protection Act (COPPA), http:///business.ftc.gov/privacy-and-security/childrens-privacy.</p>
+
+<p>If you call this method with YES, you are indicating that your app should be treated as child-directed for purposes of the 
+Children&#39;s Online Privacy Protection Act (COPPA). If you call this method with NO, you are indicating that your app should 
+not be treated as child-directed for purposes of the Children&#39;s Online Privacy Protection Act (COPPA). If you do not call this 
+method, ad requests will include no indication of how you would like your app treated with respect to COPPA.</p>
+
+<p>By setting this method, you certify that this notification is accurate and you are authorized to act on behalf of the owner of 
+the app. You understand that abuse of this setting may result in termination of your Google account.</p>
+
+<p>It may take some time for this designation to be fully implemented in applicable Google services. This designation will 
+only apply to ad requests for which you have set this method.</p>
+
+<h3>Boolean debugEnabled</h3>
+
+<p>Sets a testing value for <code>adUnitId</code> to test ads without an admob account.</p>
+
+<h2>Events</h2>
+
+<h3>didReceiveAd</h3>
+
+<p> Sent when an ad request loaded an ad. This is a good opportunity to add this
+ view to the hierarchy if it has not yet been added. If the ad was received
+ as a part of the server-side auto refreshing, you can examine the
+ hasAutoRefreshed property of the view. Use the <code>adUnitId</code> property of the callback
+ to identify the ad that was loaded.</p>
+
+<h3>didFailToReceiveAd</h3>
+
+<p> Sent when an ad request failed. Normally this is because no network
+ connection was available or no ads were available (i.e. no fill).</p>
+
+<h3>willPresentScreen</h3>
+
+<p>Sent just before presenting the user a full screen view, such as a browser,
+in response to clicking on an ad. Use this opportunity to stop animations,
+time sensitive interactions, etc.</p>
+
+<p>Normally the user looks at the ad, dismisses it, and control returns to your
+application by firing off <code>didDismissScreen</code>: However if the user hits the
+Home button or clicks on an App Store link your application will end. In that case,
+<code>willLeaveApplication</code> would fire.</p>
+
+<h3>willDismissScreen</h3>
+
+<p>Sent just before dismissing a full screen view.</p>
+
+<h3>didDismissScreen</h3>
+
+<p>Sent just after dismissing a full screen view. Use this opportunity to
+restart anything you may have stopped as part of <code>willPresentScreen</code>.</p>
+
+<h3>willLeaveApplication</h3>
+
+<p>Sent just before the application will background or terminate because the
+user clicked on an ad that will launch another application (such as the App
+Store).</p>
+
+<h3>didReceiveInAppPurchase</h3>
+
+<p>⚠️ Deprecated by the Admob SDK 7.x and Ti.Admob 2.2.0</p>
+
+<p>Called when the user clicks on the buy button of an in-app purchase ad. After the receiver handles the purchase, it must 
+call the GADInAppPurchase object&#39;s reportPurchaseStatus: method.</p>
+
+<h3>adrewarded</h3>
+
+<p>Fired when the reward based video ad has rewarded the user.</p>
+
+<h4>Parameters</h4>
+
+<p>| Name | Type | Description |
+| --- | --- | --- |
+| <code>reward</code> | <code>Object</code> | Reward information for rewarded video ads. |
+| <code>reward.type</code> | <code>String</code> | Type of the reward. |
+| <code>reward.amount</code> | <code>Number</code> | Amount rewarded to the user. |</p>
+
+<h3>adloaded</h3>
+
+<p>Fired when a reward based video ad was received. From this point on you can open the video using <code>showRewardedVideo()</code>.</p>
+
+<h3>adopened</h3>
+
+<p>Fired when the reward based video ad opened.</p>
+
+<h3>videostarted</h3>
+
+<p>Fired when the reward based video ad started playing.</p>
+
+<h3>videocompleted</h3>
+
+<p>Fired when the reward based video ad completed playing.</p>
+
+<h3>adclosed</h3>
+
+<p>Fired when the reward based video ad closed.</p>
+
+<h3>adleftapplication</h3>
+
+<p>Fires when the reward based video ad will leave the application.</p>
+
+<h3>adfailedtoload</h3>
+
+<p>Fired when the reward based video ad failed to load.</p>

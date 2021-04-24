@@ -1,0 +1,6 @@
+<Alloy>
+	<Window class="container" layout="vertical" onOpen="onOpen">
+		<Button top="70" id="label" onClick="loadConsentForm">Load Consent Form</Button>
+		<Button top="20" onClick="resetConsent">Reset Consent</Button>
+	</Window>
+</Alloy>
