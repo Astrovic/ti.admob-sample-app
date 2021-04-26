@@ -165,6 +165,10 @@ function requestConsent() {
 					callback: (e) => {
 						console.log("Admob.loadConsentForm callback:");
 						console.log(e);
+						if (e.dismissError || e.loadError) {
+							alert(e.dismissError || e.loadError);
+							return;
+						}
 						// If the status is "obtained" (freshly granted) or not required (already granted) continue
 						if ([Admob.CONSENT_STATUS_NOT_REQUIRED, Admob.CONSENT_STATUS_OBTAINED].includes(e.status)) {
 							openTestAdsWin();
