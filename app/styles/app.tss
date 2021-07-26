@@ -12,6 +12,7 @@
 	font: {
 		fontSize: "20sp"
 	},
-	color: "blue",
+	backgroundColor: "gray",
+	color: "white",
 	width: "90%"
 }

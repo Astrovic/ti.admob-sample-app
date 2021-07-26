@@ -77,11 +77,11 @@
 				<false/>
 				<!--Required by ti.admob https://developers.google.com/admob/ios/quick-start#update_your_infoplist-->
 				<key>GADApplicationIdentifier</key>				
-				<string>ca-app-pub-3940256099942544~1458002511</string> <!--Test ads-->
+				<string>ca-app-pub-5857882953536566~3016354907</string> <!--Test ads-->
 				<key>GADIsAdManagerApp</key>
 				<true/>
 				<key>GADApplicationIdentifier</key>
-				<string>ca-app-pub-3940256099942544~1458002511</string>
+				<string>ca-app-pub-5857882953536566~3016354907</string>
 				<key>SKAdNetworkItems</key>
 				<array>
 					<dict>
@@ -231,22 +231,32 @@
 	</ios>
 	<android xmlns:android="http://schemas.android.com/apk/res/android">
 		<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1">
-		<application android:largeHeap="true">
-			<!-- ti.admob required -->
-			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/>
-		</application>
+			<application android:largeHeap="true">
+				<!-- ti.admob required -->
+				<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-7961955490290583~5558770633"/>
+				<!--meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/-->
+				<activity android:name=".MainActivity">
+					<intent-filter>
+						<action android:name="android.intent.action.MAIN" />
+						<category android:name="android.intent.category.LAUNCHER" />
+					</intent-filter>
+				</activity>
+			</application>
 		</manifest>
 	</android>
 	<modules>
-		<module platform="iphone" version="4.0.0">ti.admob</module>
+		<module platform="iphone" version="4.1.0">ti.admob</module>
 		<module platform="android" version="5.0.5">ti.admob</module>
+		<module platform="iphone" version="5.0.0">firebase.core</module>
+		<module platform="iphone">facebook</module>
+		<module platform="android" version="7.0.7">ti.android.admob</module>
 	</modules>
 	<deployment-targets>
 		<target device="android">true</target>
 		<target device="ipad">true</target>
 		<target device="iphone">true</target>
 	</deployment-targets>
-	<sdk-version>9.3.2.GA</sdk-version>
+	<sdk-version>10.0.0.GA</sdk-version>
 <plugins><plugin version="1.0">ti.alloy</plugin>
 </plugins>
 </ti:app>
