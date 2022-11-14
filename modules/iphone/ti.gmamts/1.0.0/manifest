@@ -1,0 +1,19 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0.0
+apiversion: 2
+architectures: arm64 x86_64
+mac: false
+description: gmamts
+author: astrovicApps
+license: Specify your license
+copyright: Copyright (c) 2022 by Your Company
+
+# these should not be edited
+name: gmamts
+moduleid: ti.gmamts
+guid: 7116fe73-bbb1-4f46-ac4f-6c00d0d611b5
+platform: iphone
+minsdk: 10.2.0.v20220104041148

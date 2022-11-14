@@ -1,17 +1,22 @@
-let Admob;
+var Admob;
 if (OS_IOS) {
-	Admob = require('ti.admob')
+	Admob = require('ti.admob');
+	if (Admob.trackingAuthorizationStatus === Admob.TRACKING_AUTHORIZATION_STATUS_AUTHORIZED) {
+		Ti.API.info("Admob.TRACKING_AUTHORIZATION_STATUS_AUTHORIZED, enable personalized ads in ads mediation too")
+		Admob.setInMobi_updateGDPRConsent(true);
+		Admob.setAdvertiserTrackingEnabled(true);
+	}
 } else {
 	Admob = require("ti.android.admob");
-	Admob.setTestDeviceId("AD119416FA7E9487D4E1EDDE07856B7D");
+	Admob.setTestDeviceId("4E9D70AA851097F0E3F3D0486FDBF60B"); //USE YOUR DEVICE ID HERE
 }
 
 if (OS_IOS) {
 	/* Banner ads */
 	var bannerAdView = Admob.createView({
 		debugEnabled: false,
-		height: 200,
-		bottom: 0,
+		height: 100,
+		bottom: 50,
 		adType: Admob.AD_TYPE_BANNER,
 		adUnitId: 'ca-app-pub-3940256099942544/2934735716', // You can get your own at http: //www.admob.com/
 		adBackgroundColor: 'black',
@@ -26,19 +31,19 @@ if (OS_IOS) {
 		tagForChildDirectedTreatment: false, // http:///business.ftc.gov/privacy-and-security/childrens-privacy for more infos
 		keywords: ['keyword1', 'keyword2']
 	});
-	$.testAdsWin.add(bannerAdView);
+	setTimeout(() => {
+		console.log("Add banner!")
+		$.testAdsWin.add(bannerAdView);
+	}, 2000);
+
 
 	bannerAdView.addEventListener('didReceiveAd', function (e) {
+		console.log(e)
 		Ti.API.info('BannerAdView - Did receive ad: ' + e.adUnitId + '!');
 	});
 	bannerAdView.addEventListener('didFailToReceiveAd', function (e) {
 		Ti.API.error('BannerAdView - Failed to receive ad: ' + e.error);
 	});
-	/*
-	bannerAdView.addEventListener('didRecordImpression', function () {
-		Ti.API.error('BannerAdView - didRecordImpression');
-	});
-	*/
 	bannerAdView.addEventListener('willPresentScreen', function (e) {
 		Ti.API.error('BannerAdView - willPresentScreen');
 	});
@@ -51,48 +56,39 @@ if (OS_IOS) {
 	bannerAdView.addEventListener('didPresentScreen', function (e) {
 		Ti.API.info('BannerAdView - Presenting screen!' + e.adUnitId);
 	});
-} else {	
-
+} else {
+	var v = Ti.UI.createView({
+		bottom: 0,
+		height: 100
+	})
 	var bannerAd = Admob.createView({
 		bottom: 0,
-		//width: "100%",
-		//height: 200,
-		viewType: Admob.TYPE_ADS,
-		adSizeType: Admob.ADAPTATIVE_BANNER,
-		//testing: true,
-		//borderColor: "red",
-		adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-		extras: {'npa':1},
-		testDeviceId: "G9CCEHKYF95FFR8152FX50D059DC8336", //USE YOUR DEVICE ID HERE
-	});
-	/*var bannerAd = Admob.createBannerView({
-		adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-		testing: false, // default is false
-		top: 0, // optional
-		//bottom: _assets.android.bottom,
 		width: "100%",
-		height: 200,
-		//adBackgroundColor: "transparent",
-		visible: true,
-		adSize: Admob.AD_SIZE_SMART_BANNER, //Admob.AD_SIZE_BANNER,
-		extras: {npa:1}, // Object of additional infos. NOTE: npa=1 disables personalized ads (!)
-		//testDevices : "CBB9E9CAA4291A71E510627CEFC530AA"
-	});*/
-	$.testAdsWin.add(bannerAd);
+		height: 100,
+		viewType: Admob.TYPE_ADS,
+		adSizeType: Admob.ADAPTATIVE_BANNER, // ADAPTATIVE_BANNER, LARGE_BANNER, SMART_BANNER, FULLBANNER, LEADERBOARD, FLUID, WIDE_SKYSCRAPER		
+		adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+		extras: {
+			'npa': 1
+		},
+		testDeviceId: "4E9D70AA851097F0E3F3D0486FDBF60B", //USE YOUR DEVICE ID HERE		
+	});
+	v.add(bannerAd);
+	setTimeout(() => {
+		console.log("Add banner!")
+		$.testAdsWin.add(v);
+	}, 2000);	
 
 	bannerAd.addEventListener('ad_received', function (e) {
 		Titanium.API.info("Banner Ad received");
 	});
-
 	bannerAd.addEventListener('ad_not_received', function (e) {
 		Titanium.API.info("Banner Ad failed");
 		Ti.API.error(JSON.stringify(e));
 	});
-
 	bannerAd.addEventListener('load', function (e) {
 		Titanium.API.info("Banner Ad load");
 	});
-
 	bannerAd.addEventListener('fail', function (e) {
 		Titanium.API.info("Banner Ad fail");
 		Ti.API.error(JSON.stringify(e));
@@ -100,7 +96,7 @@ if (OS_IOS) {
 }
 
 /* interstitial Ads */
-if(OS_IOS) {
+if (OS_IOS) {
 	var interstitialAd = Admob.createView({
 		debugEnabled: false, // If enabled, a dummy value for `adUnitId` will be used to test
 		adType: Admob.AD_TYPE_INTERSTITIAL,
@@ -109,22 +105,27 @@ if(OS_IOS) {
 		extras: {
 			'version': 1.0,
 			'name': 'My App'
-		} // Object of additional infos
+		}, // Object of additional infos
+		visible: false // If true, covers the win when added and can't tap nothing
 	});
 	interstitialAd.addEventListener('adloaded', function (e) {
 		Ti.API.info('interstitialAd - adloaded: Did receive ad!');
 		console.log(e);
-		interstitialAd.showInterstitial();
+		//interstitialAd.showInterstitial();
+		$.interstitialButton.title = "Show interstitial Ad";
 		enableInterstitialButton();
 	});
 
 	interstitialAd.addEventListener('didReceiveAd', function (e) {
 		Ti.API.info('interstitialAd - Did receive ad!');
+		$.interstitialButton.title = "Show interstitial Ad";
 		console.log(e);
 		enableInterstitialButton();
 	});
 	interstitialAd.addEventListener('didFailToReceiveAd', function (e) {
 		Ti.API.error('interstitialAd - Failed to receive ad: ' + e.error);
+		$.interstitialButton.title = "Load interstitial Ad";
+		$.testAdsWin.remove(interstitialAd);
 		enableInterstitialButton();
 	});
 	interstitialAd.addEventListener('didPresentScreen', function (e) {
@@ -133,6 +134,7 @@ if(OS_IOS) {
 	});
 	interstitialAd.addEventListener('didDismissScreen', function (e) {
 		Ti.API.info('interstitialAd - Dismissed screen: ' + e.adUnitId);
+		$.testAdsWin.remove(interstitialAd);
 		enableInterstitialButton();
 	});
 	interstitialAd.addEventListener('willDismissScreen', function (e) {
@@ -143,39 +145,35 @@ if(OS_IOS) {
 		Ti.API.info('interstitialAd- didRecordImpression');
 		console.log(e);
 		enableInterstitialButton();
-	});	
+	});
 } else {
-	var interstitialAd = Admob.createView({
-		viewType: Admob.TYPE_ADS,
-		adSizeType: Admob.INTERSTITIAL,
-		testDeviceId: "AD119416FA7E9487D4E1EDDE07856B7D", //USE YOUR DEVICE ID HERE
-		adUnitId: 'ca-app-pub-3940256099942544/1033173712', //USE YOUR AD_UNIT ID HERE
-	});
-	//$.testAdsWin.add(interstitialAd);
+	var interstitialAd;
+	setTimeout(() => {
+		interstitialAd = Admob.createView({
+			viewType: Admob.TYPE_ADS,
+			adSizeType: Admob.INTERSTITIAL,
+			testDeviceId: "AD119416FA7E9487D4E1EDDE07856B7D", //USE YOUR DEVICE ID HERE
+			adUnitId: 'ca-app-pub-3940256099942544/1033173712', //USE YOUR AD_UNIT ID HERE
+		});
 
-	interstitialAd.addEventListener(Admob.AD_LOADED, function (e) {
-		Titanium.API.warn("Interstital Ad Loaded");
-		//interstitialAd.showInterstitialAd();
-		$.interstitialButton.title = "Show interstitial Ad";
-	});
-
-	interstitialAd.addEventListener(Admob.AD_RECEIVED, function (e) {
-		Titanium.API.warn("Interstital Ad Received");
-		$.interstitialButton.title = "Show interstitial Ad";
-		//interstitialAd.showInterstitialAd();
-	});
-
-	interstitialAd.addEventListener(Admob.AD_NOT_RECEIVED, function (e) {
-		Titanium.API.error("Interstital Ad failed");
-		console.log(JSON.stringify(e));
-		$.interstitialButton.title = "Load interstitial Ad";
-		$.testAdsWin.add(interstitialAd);
-	});
-
-	interstitialAd.addEventListener(Admob.AD_CLOSED, function (e) {
-		Titanium.API.warn("Interstital ad close successfully. RIP!");
-		$.interstitialButton.title = "Load interstitial Ad";
-	});
+		interstitialAd.addEventListener(Admob.AD_LOADED, function (e) {
+			Titanium.API.warn("Interstital Ad Loaded");
+			$.interstitialButton.title = "Show interstitial Ad";
+		});
+		interstitialAd.addEventListener(Admob.AD_RECEIVED, function (e) {
+			Titanium.API.warn("Interstital Ad Received");
+			$.interstitialButton.title = "Show interstitial Ad";
+		});
+		interstitialAd.addEventListener(Admob.AD_NOT_RECEIVED, function (e) {
+			Titanium.API.error("Interstital Ad failed");
+			console.log(JSON.stringify(e));
+		});
+		interstitialAd.addEventListener(Admob.AD_CLOSED, function (e) {
+			Titanium.API.warn("Interstital ad close successfully. RIP!");
+			$.interstitialButton.title = "Load interstitial Ad";
+			$.testAdsWin.remove(interstitialAd);
+		});
+	}, 2000);
 }
 
 function showInterstitial() {
@@ -184,18 +182,19 @@ function showInterstitial() {
 		$.testAdsWin.add(interstitialAd);
 	} else {
 		console.log("showInterstitial --> SHOW");
-		interstitialAd.showInterstitialAd();
+		if (OS_IOS) {
+			interstitialAd.showInterstitial()
+		} else {
+			interstitialAd.showInterstitialAd();
+		}
 		$.interstitialButton.title = "Load interstitial Ad";
-		$.testAdsWin.remove(interstitialAd);
-	}	
-	return;
-	disableInterstitialButton();
-	interstitialAd.receive();
+	}
 };
 
 function disableInterstitialButton() {
 	$.interstitialButton.enabled = false;
 }
+
 function enableInterstitialButton() {
 	$.interstitialButton.enabled = true;
 }
@@ -212,27 +211,26 @@ if (OS_IOS) {
 		} // Object of additional infos
 	});
 
-	rewardedVideo.addEventListener('adloaded', function () {
+	rewardedVideo.addEventListener('adloaded', function (e) {
 		Ti.API.debug('rewardedVideo - Rewarded video loaded!');
-		rewardedVideo.showRewardedVideo();
+		console.log(e);
 		enableRewardedVideoButton();
 	});
 	rewardedVideo.addEventListener('adrewarded', function (reward) {
 		Ti.API.debug('rewardedVideo -adrewarded');
 		Ti.API.debug(`Received reward! type: ${reward.type}, amount: ${reward.amount}`);
 		console.log(reward);
-		// pre load next rewarded video
-		// rewardedVideo.loadRewardedVideo('ad-unit-id');
-		enableRewardedVideoButton();
+		disableRewardedVideoButton();
 		alert("Well! Amount earned: " + reward.amount);
 	});
-	/*rewardedVideo.addEventListener('adclosed', function () {
+	rewardedVideo.addEventListener('adclosed', function () {
 		Ti.API.debug('rewardedVideo - adclosed: No gold for you!');
 		enableRewardedVideoButton();
-	});*/
+	});
 	rewardedVideo.addEventListener('adfailedtoload', function (error) {
 		Ti.API.debug('rewardedVideo - Rewarded video ad failed to load: ' + error.message);
-		enableRewardedVideoButton();
+		//enableRewardedVideoButton();
+		disableRewardedVideoButton();
 	});
 	rewardedVideo.addEventListener('didReceiveAd', function (e) {
 		Ti.API.info('rewardedVideo - Did receive ad!');
@@ -241,7 +239,8 @@ if (OS_IOS) {
 	});
 	rewardedVideo.addEventListener('didFailToReceiveAd', function (e) {
 		Ti.API.error('rewardedVideo - Failed to receive ad: ' + e.error);
-		enableRewardedVideoButton();
+		//enableRewardedVideoButton();
+		disableRewardedVideoButton();
 	});
 	rewardedVideo.addEventListener('didPresentScreen', function (e) {
 		Ti.API.info('rewardedVideo - didPresentScreen: ' + e.adUnitId);
@@ -249,7 +248,8 @@ if (OS_IOS) {
 	});
 	rewardedVideo.addEventListener('didDismissScreen', function (e) {
 		Ti.API.info('rewardedVideo - Dismissed screen: ' + e.adUnitId);
-		enableRewardedVideoButton();
+		//enableRewardedVideoButton();
+		disableRewardedVideoButton();
 	});
 	rewardedVideo.addEventListener('willDismissScreen', function (e) {
 		Ti.API.info('rewardedVideo - willDismissScreen: ' + e.adUnitId);
@@ -258,89 +258,86 @@ if (OS_IOS) {
 	rewardedVideo.addEventListener('didRecordImpression', function (e) {
 		Ti.API.info('rewardedVideo - didRecordImpression');
 		console.log(e);
-		enableRewardedVideoButton();
+		disableRewardedVideoButton();
 	});
 } else {
-	var rewarded = Admob.createView({
-		viewType: Admob.TYPE_ADS,
-		adSizeType: Admob.REWARDED, // or Admob.REWARDED_INTERSTITIAL
-		//testDeviceId: "AD119416FA7E9487D4E1EDDE07856B7D", //USE YOUR DEVICE ID HERE
-		adUnitId: 'ca-app-pub-3940256099942544/5224354917', //USE YOUR AD_UNIT ID HERE
-		extras: {}
-	});	
-	/*setTimeout(() => {		
-		Ti.API.info("AGGIUNGI REWARDDDDD");
-		$.testAdsWin.add(rewarded);
+	var rewarded;
+	var androidRewardedAddedToWin = false;
+	setTimeout(() => {
+		rewarded = Admob.createView({
+			viewType: Admob.TYPE_ADS,
+			adSizeType: Admob.REWARDED, // or Admob.REWARDED_INTERSTITIAL
+			//testDeviceId: "AD119416FA7E9487D4E1EDDE07856B7D", //USE YOUR DEVICE ID HERE
+			adUnitId: 'ca-app-pub-3940256099942544/5224354917', //USE YOUR AD_UNIT ID HERE
+			extras: {}
+		});
+
+		function AD_LOADED(e) {
+			Titanium.API.info("Rewarded Ad AD_LOADED");
+			enableRewardedVideoButton();
+		};
+
+		function AD_REWARDED(e) {
+			Titanium.API.info("Rewarded Ad AD_REWARDED");
+			Titanium.API.info("Yay! You can give the user his reward now!");
+			Titanium.API.info(JSON.stringify(e));
+			alert("Well! Amount earned: " + e.amount);
+			disableRewardedVideoButton();
+		};
+
+		function AD_NOT_RECEIVED(e) {
+			Titanium.API.info("Rewarded Ad AD_NOT_RECEIVED");
+			disableRewardedVideoButton();
+		};
+
+		function AD_CLOSED(e) {
+			Titanium.API.info("Rewarded Ad AD_CLOSED, no gold for you!");
+			disableRewardedVideoButton();
+		};
+
+		function addAdEventListeners() {
+			rewarded.addEventListener(Admob.AD_LOADED, AD_LOADED);
+			rewarded.addEventListener(Admob.AD_REWARDED, AD_REWARDED);
+			rewarded.addEventListener(Admob.AD_CLOSED, AD_CLOSED);
+			rewarded.addEventListener(Admob.AD_NOT_RECEIVED, AD_NOT_RECEIVED);
+		}
 		addAdEventListeners();
-	}, 0);*/
 
-	rewarded.addEventListener(Admob.AD_LOADED, function (e) {
-		Titanium.API.info("Rewarded Ad AD_LOADED");
-		enableRewardedVideoButton();
-		//rewarded.showRewardedAd();
-	});
-
-	rewarded.addEventListener(Admob.AD_REWARDED, function (e) {
-		Titanium.API.info("Rewarded Ad AD_REWARDED");
-		Titanium.API.info("Yay! You can give the user his reward now!");
-		Titanium.API.info(JSON.stringify(e));
-		disableRewardedVideoButton();
-		//rewarded.requestNewRewardedAd();
-	});
-
-	rewarded.addEventListener(Admob.AD_OPENED, function (e) {
-		Titanium.API.info("Rewarded Ad AD_OPENED");
-		ùdisableRewardedVideoButton();
-	});
-
-	rewarded.addEventListener(Admob.AD_FAILED_TO_SHOW, function (e) {
-		Titanium.API.info("Rewarded Ad AD_FAILED_TO_SHOW");
-		disableRewardedVideoButton();
-	});
-
-	rewarded.addEventListener(Admob.AD_CLOSED, function (e) {
-		Titanium.API.info("Rewarded Ad AD_CLOSED");
-		disableRewardedVideoButton();
-	});
-	/*
-	function addAdEventListeners() {
-		rewarded.addEventListener(Admob.AD_RECEIVED, ()=>{alert("AD_RECEIVED")});
-		rewarded.addEventListener(Admob.AD_LOADED, ()=>{alert("AD_LOADED")});
-		rewarded.addEventListener(Admob.AD_REWARDED, ()=>{alert("AD_REWARDED")});
-		rewarded.addEventListener(Admob.AD_CLOSED, ()=>{alert("AD_CLOSED")});
-		rewarded.addEventListener(Admob.AD_NOT_RECEIVED, ()=>{alert("AD_NOT_RECEIVED")});
-	};
-	*/
+	}, 4000);
 }
 
 function showRewarded() {
 	if ($.rewardedVideoButton.title === "Load Rewarded Video Ad") {
 		console.log("showRewarded --> LOAD");
-		$.testAdsWin.add(rewarded);
+		if (OS_ANDROID) {
+			if (androidRewardedAddedToWin) {
+				console.log("requestNewRewardedAd()");
+				rewarded.requestNewRewardedAd();
+			} else {
+				$.testAdsWin.add(rewarded);
+				androidRewardedAddedToWin = true;
+			}
+		} else {
+			rewardedVideo.receive();
+		}
 	} else {
 		console.log("showRewarded --> SHOW");
 		$.rewardedVideoButton.title = "Load Rewarded Video Ad";
-		rewarded.showRewardedAd();
-		$.testAdsWin.remove(rewarded);
+		if (OS_ANDROID) {
+			rewarded.showRewardedAd();
+		} else {
+			rewardedVideo.showRewardedVideo();
+		}
 	}
-	//console.log("showRewarded");
-	//$.testAdsWin.add(rewarded);
-	//rewarded.showRewardedAd();
-	//rewarded.requestNewRewardedAd();	
-	//return;
-	//disableRewardedVideoButton();
-	//$.rewardedVideoButton.title = "Load Rewarded Video Ad";
-	//rewardedVideo.receive();
 };
 
 function disableRewardedVideoButton() {
-	//$.rewardedVideoButton.enabled = false;	
 	setTimeout(() => {
 		$.rewardedVideoButton.title = "Load Rewarded Video Ad";
 	}, 10);
 }
+
 function enableRewardedVideoButton() {
-	//$.rewardedVideoButton.enabled = true;
 	setTimeout(() => {
 		$.rewardedVideoButton.title = 'Show Rewarded Video Ad';
 	}, 10);
@@ -349,89 +346,3 @@ function enableRewardedVideoButton() {
 function closeWin() {
 	$.testAdsWin.close();
 }
-
-/*
-var ad, adUnitId;
-var adAddedToWin = false;
-var AdmobRewarded = require("ti.android.admob");
-setTimeout(function () {
-	loadRewardedVideo();
-}, 2000);
-
-function loadRewardedVideo() {
-	Ti.API.debug('loadRewardedVideo');
-	if (adAddedToWin) {
-		removeAdEventListeners();
-		$.testAdsWin.remove(ad);
-		ad = null;
-	}
-	setTimeout(function () {
-		adUnitId = 'ca-app-pub-3940256099942544/5224354917';
-		ad = AdmobRewarded.createView({
-			viewType: AdmobRewarded.TYPE_ADS,
-			adSizeType: AdmobRewarded.REWARDED,
-			//testDeviceId : "CBB9E9CAA4291A71E510627CEFC530AA", //USE YOUR DEVICE ID HERE
-			adUnitId: adUnitId, //USE YOUR AD_UNIT ID HERE
-			extras: {}
-		});
-		$.testAdsWin.add(ad);
-		adAddedToWin = true;		
-		addAdEventListeners();
-		//ad.requestNewRewardedAd(); // lo carica in automatico con $.testAdsWin.add(ad);
-	}, 1000);
-}
-
-function AD_RECEIVED() {
-	Ti.API.debug('Did receive rewarded ad!');
-	//Ti.API.debug(adUnitId);
-	//Alloy.Globals.adMob.config.rewarded.loaded = true;
-}
-
-function AD_LOADED() {
-	Ti.API.debug('Rewarded Ad AD_LOADED');
-	//Ti.API.debug(adUnitId);
-	//Alloy.Globals.adMob.config.rewarded.loaded = true;
-	ad.showRewardedAd();
-}
-
-function AD_REWARDED(reward) {
-	Ti.API.debug(`Received reward! type: ${reward.type}, amount: ${reward.amount}`);
-	//Ti.API.debug('Reward:' + JSON.stringify(reward));
-	
-	Ti.UI.createAlertDialog({
-		title: L('big_days'),
-		message: String.format(L('eventi_guadagnati'), reward.amount.toString()),
-		buttonNames: ['OK']
-	}).show();
-
-	// pre load next rewarded video
-	loadRewardedVideo();
-}
-
-function AD_CLOSED() {
-	Ti.API.debug('No gold for you!');
-	loadRewardedVideo();
-}
-
-function AD_NOT_RECEIVED(error) {
-	Ti.API.error('Rewarded video ad failed to load: ' + error.message);
-	//Ti.API.debug(adUnitId);
-	loadRewardedVideo();
-}
-
-function addAdEventListeners() {
-	ad.addEventListener(AdmobRewarded.AD_RECEIVED, AD_RECEIVED);
-	ad.addEventListener(AdmobRewarded.AD_LOADED, AD_LOADED);
-	ad.addEventListener(AdmobRewarded.AD_REWARDED, AD_REWARDED);
-	ad.addEventListener(AdmobRewarded.AD_CLOSED, AD_CLOSED);
-	ad.addEventListener(AdmobRewarded.AD_NOT_RECEIVED, AD_NOT_RECEIVED);
-}
-
-function removeAdEventListeners() {
-	ad.removeEventListener(AdmobRewarded.AD_RECEIVED, AD_RECEIVED);
-	ad.removeEventListener(AdmobRewarded.AD_LOADED, AD_LOADED);
-	ad.removeEventListener(AdmobRewarded.AD_REWARDED, AD_REWARDED);
-	ad.removeEventListener(AdmobRewarded.AD_CLOSED, AD_CLOSED);
-	ad.removeEventListener(AdmobRewarded.AD_NOT_RECEIVED, AD_NOT_RECEIVED);
-}
-*/
