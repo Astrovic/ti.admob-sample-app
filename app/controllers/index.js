@@ -7,7 +7,7 @@ if (OS_IOS) {
 }
 
 if (OS_IOS) {
-    console.log(
+    console.debug(
         `		
 		Admob.CONSENT_FORM_STATUS_UNKNOWN: ${Admob.CONSENT_FORM_STATUS_UNKNOWN};
 		Admob.CONSENT_FORM_STATUS_AVAILABLE: ${Admob.CONSENT_FORM_STATUS_AVAILABLE};
@@ -41,8 +41,8 @@ function loadConsentForm(e) {
 // check trackingAuthorizationStatus on iOS >= 14
 function checkTrackingAuthorizationStatus() {
     if (Alloy.Globals.debug_mode) {
-        Ti.API.info("Admob.trackingAuthorizationStatus", Admob.trackingAuthorizationStatus);
-        Ti.API.info(Admob.trackingAuthorizationStatus === Admob.TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED);
+        console.debug("Admob.trackingAuthorizationStatus", Admob.trackingAuthorizationStatus);
+        console.debug(Admob.trackingAuthorizationStatus === Admob.TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED);
     }
     if (parseInt(Ti.Platform.version.split(".")[0]) >= 14 &&
         Admob.trackingAuthorizationStatus === Admob.TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED
@@ -55,31 +55,31 @@ function checkTrackingAuthorizationStatus() {
 
 function requestTrackingAuthorization() {
     if (Alloy.Globals.debug_mode) {
-        Ti.API.info("Current trackingAuthorizationStatus: --> ", Admob.trackingAuthorizationStatus);
+        console.debug("Current trackingAuthorizationStatus: --> ", Admob.trackingAuthorizationStatus);
         getStatus({
             status: Admob.trackingAuthorizationStatus
         });
     }
 
     function getStatus(e) {
-        console.log(e);
+        console.debug(e);
         if (e.status === Admob.TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED) {
-            console.log('TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED');
+            console.debug('TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED');
         } else if (e.status === Admob.TRACKING_AUTHORIZATION_STATUS_RESTRICTED) {
-            console.log('TRACKING_AUTHORIZATION_STATUS_RESTRICTED');
+            console.debug('TRACKING_AUTHORIZATION_STATUS_RESTRICTED');
         } else if (e.status === Admob.TRACKING_AUTHORIZATION_STATUS_DENIED) {
-            console.log('TRACKING_AUTHORIZATION_STATUS_DENIED');
+            console.debug('TRACKING_AUTHORIZATION_STATUS_DENIED');
         } else if (e.status === Admob.TRACKING_AUTHORIZATION_STATUS_AUTHORIZED) {
-            console.log('TRACKING_AUTHORIZATION_STATUS_AUTHORIZED');
+            console.debug('TRACKING_AUTHORIZATION_STATUS_AUTHORIZED');
         } else {
-            console.log('TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED');
+            console.debug('TRACKING_AUTHORIZATION_STATUS_NOT_DETERMINED');
         }
     }
     Admob.requestTrackingAuthorization({
         callback: e => {
             getStatus(e);
             if (e.status === Admob.TRACKING_AUTHORIZATION_STATUS_AUTHORIZED) {
-                Ti.API.info("Admob.TRACKING_AUTHORIZATION_STATUS_AUTHORIZED, enable personalized ads in ads mediation too")
+                console.debug("Admob.TRACKING_AUTHORIZATION_STATUS_AUTHORIZED, enable personalized ads in ads mediation too")
                 Admob.setInMobi_updateGDPRConsent(true);
                 Admob.setAdvertiserTrackingEnabled(true);
             }
@@ -89,29 +89,29 @@ function requestTrackingAuthorization() {
 };
 
 function requestConsent() {
-    console.log("request consent");
+    console.debug("request consent");
     if (OS_IOS) {
-        console.log("request consent");
+        console.debug("request consent");
         Admob.requestConsentInfoUpdateWithParameters({
             testDeviceIdentifiers: [Admob.SIMULATOR_ID, '74AADF66-C4CA-4961-9839-C78815E056EB'],
             geography: Admob.DEBUG_GEOGRAPHY_EEA,
             tagForUnderAgeOfConsent: false,
             callback: function (e) {
-                console.log("requestConsentInfoUpdateWithParameters callback");
-                console.log(
+                console.debug("requestConsentInfoUpdateWithParameters callback");
+                console.debug(
                     `
                     Admob.CONSENT_FORM_STATUS_UNKNOWN: ${Admob.CONSENT_FORM_STATUS_UNKNOWN};
                     Admob.CONSENT_FORM_STATUS_AVAILABLE: ${Admob.CONSENT_FORM_STATUS_AVAILABLE};
                     Admob.CONSENT_FORM_STATUS_UNAVAILABLE: ${Admob.CONSENT_FORM_STATUS_UNAVAILABLE};                   
                     `
                 );
-                console.log(e);
+                console.debug(e);
                 if (e.success && e.status === Admob.CONSENT_FORM_STATUS_AVAILABLE) {
-                    console.log("Consent form is available, load it!");
+                    console.debug("Consent form is available, load it!");
                     Admob.loadForm({
                         callback: (e) => {
-                            console.log("Admob.loadConsentForm callback:");
-                            console.log(
+                            console.debug("Admob.loadConsentForm callback:");
+                            console.debug(
                                 `
                                 Admob.CONSENT_STATUS_UNKNOWN: ${Admob.CONSENT_STATUS_UNKNOWN};
                                 Admob.CONSENT_STATUS_REQUIRED: ${Admob.CONSENT_STATUS_REQUIRED};
@@ -119,7 +119,7 @@ function requestConsent() {
                                 Admob.CONSENT_STATUS_OBTAINED: ${Admob.CONSENT_STATUS_OBTAINED};
                                 `
                             )
-                            console.log(e);
+                            console.debug(e);
                             if (e.dismissError || e.loadError) {
                                 alert(e.dismissError || e.loadError);
                                 return;
@@ -133,7 +133,7 @@ function requestConsent() {
                         }
                     })
                 } else {
-                    console.log("No consent form is available");
+                    console.debug("No consent form is available");
                     checkConsent();
                 }
             }
@@ -160,45 +160,45 @@ function openTestAdsWin() {
 
 if (OS_ANDROID) {
     Admob.addEventListener(Admob.CONSENT_REQUIRED, function () {
-        console.log("Admod.CONSENT_REQUIRED");
+        console.debug("Admod.CONSENT_REQUIRED");
         Admob.showConsentForm();
     });
     Admob.addEventListener(Admob.CONSENT_NOT_REQUIRED, function () {
-        console.log("Admod.CONSENT_NOT_REQUIRED");
+        console.debug("Admod.CONSENT_NOT_REQUIRED");
         //openTestAdsWin();
         checkConsent();
     });
     Admob.addEventListener(Admob.CONSENT_READY, function () {
-        console.log("Admod.CONSENT_READY");
+        console.debug("Admod.CONSENT_READY");
     });
 
     Admob.addEventListener(Admob.CONSENT_INFO_UPDATE_FAILURE, function () {
-        console.log("Admod.CONSENT_INFO_UPDATE_FAILURE");
+        console.debug("Admod.CONSENT_INFO_UPDATE_FAILURE");
     });
 
     Admob.addEventListener(Admob.CONSENT_FORM_DISMISSED, function () {
-        console.log("Admod.CONSENT_FORM_DISMISSED");
+        console.debug("Admod.CONSENT_FORM_DISMISSED");
     });
 
     Admob.addEventListener(Admob.CONSENT_FORM_LOADED, function () {
-        console.log("Admod.CONSENT_FORM_LOADED");
+        console.debug("Admod.CONSENT_FORM_LOADED");
     });
 
     Admob.addEventListener(Admob.CONSENT_ERROR, function (e) {
-        console.log("Admod.CONSENT_ERROR");
-        console.log(e.message);
+        console.debug("Admod.CONSENT_ERROR");
+        console.debug(e.message);
     });
 
     Admob.addEventListener(Admob.CONSENT_FORM_NOT_AVAILABLE, function (e) {
-        console.log("Admod.CONSENT_FORM_NOT_AVAILABLE");
-        console.log(e.message);
+        console.debug("Admod.CONSENT_FORM_NOT_AVAILABLE");
+        console.debug(e.message);
         checkConsent();
     });
 }
 
 function checkConsent() {
     if (Alloy.Globals.debug_mode) {
-        Ti.API.debug("index.js: checkConsent()");
+        console.debug("index.js: checkConsent()");
     }
 
     setTimeout(() => {
@@ -207,7 +207,7 @@ function checkConsent() {
         /* Banner Ads */
         var adUnitId = OS_IOS ? 'ca-app-pub-3940256099942544/2934735716' : 'ca-app-pub-3940256099942544/6300978111';
         if (Alloy.Globals.debug_mode) {
-            console.log("test adUnitId:", adUnitId);
+            console.debug("test adUnitId:", adUnitId);
         }
         if (OS_IOS) {
             var bannerAdView = Admob.createView({
@@ -227,19 +227,19 @@ function checkConsent() {
                 bannerAdView.removeEventListener('didReceiveAd', arguments.callee);
                 $.index.remove(bannerAdView);
                 bannerAdView = null;
-                Ti.API.info('bannerAdView - Did receive ad!');
+                console.debug('bannerAdView - Did receive ad!');
                 openTestAdsWin();
             });
             bannerAdView.addEventListener('didFailToReceiveAd', function (e) {
                 bannerAdView.removeEventListener('didReceiveAd', arguments.callee);
                 $.index.remove(bannerAdView);
                 bannerAdView = null;
-                Ti.API.error('bannerAdView - Failed to receive ad: ' + e.error);                
+                console.error('bannerAdView - Failed to receive ad: ' + e.error);                
                 Admob.resetConsent(); // reset permissions to show UMP form again
                 alert("Authorization not granted! Decide what to do ...");                     
             });
         } else {
-            var adView = Admob.createView({
+            var adView = Admob.createBanner({
                 bottom: 0,
                 //keyword : "titanium",
                 //contentUrl : "www.myur.com",
@@ -255,7 +255,7 @@ function checkConsent() {
 
             adView.addEventListener(Admob.AD_RECEIVED, function (e) {
                 Titanium.API.info("Ad received");
-                console.log(e);
+                console.debug(e);
                 setTimeout(() => {
                     $.index.remove(adView);
                     adView = null;
@@ -268,7 +268,7 @@ function checkConsent() {
                 console.error(e);
                 $.index.remove(adView);
                 adView = null;
-                Ti.API.error('bannerAdView - Failed to receive ad: ' + e.error);
+                console.error('bannerAdView - Failed to receive ad: ' + e.error);
                 Admob.resetConsentForm(); // reset permissions to show UMP form again
                 alert("Authorization not granted! Decide what to do ...");
             });
