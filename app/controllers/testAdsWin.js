@@ -348,6 +348,13 @@ function showRewarded() {
 	}
 };
 
+function showMediationTestSuite() {
+	if (OS_ANDROID) {
+		console.log("showMediationTestSuite!!!");		
+		Admob.showMediationTestSuite();
+	}
+}
+
 function disableRewardedVideoButton() {
 	setTimeout(() => {
 		$.rewardedVideoButton.title = "Load Rewarded Video Ad";

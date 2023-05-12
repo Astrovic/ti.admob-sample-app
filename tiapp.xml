@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 	<id>it.astrovicApps.admobTest</id>
 	<name>AdMobTest</name>
-	<version>2.0.0</version>
+	<version>3.0.0</version>
 	<publisher>not specified</publisher>
 	<url>AstrovicApps</url>
 	<description />
@@ -60,22 +60,22 @@
 		<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1">
 			<application android:largeHeap="true">
 				<!-- ti.admob required -->
-				<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-7961955490290583~5558770633"/>
-				<!--meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/--><!--Test ads-->
+				<!--meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-7961955490290583~5558770633"/-->
+				<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/><!--Test ads-->
 			</application>
 		</manifest>
 	</android>
 	<modules>
 		<!--module platform="android" version="5.1.0">ti.admob</module-->
-		<module platform="android" version="9.1.0">ti.android.admob</module>
-		<module platform="iphone" version="6.0.0">ti.admob</module>
+		<module platform="android" version="9.3.0">ti.android.admob</module>
+		<module platform="iphone" version="6.1.0">ti.admob</module>
 	</modules>
 	<deployment-targets>
 		<target device="android">true</target>
 		<target device="ipad">true</target>
 		<target device="iphone">true</target>
 	</deployment-targets>
-	<sdk-version>11.1.1.GA</sdk-version>
+	<sdk-version>12.1.1.GA</sdk-version>
 	<plugins>
 		<plugin version="1.0">ti.alloy</plugin>
 	</plugins>
