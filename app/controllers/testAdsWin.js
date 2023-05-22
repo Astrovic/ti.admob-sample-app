@@ -61,7 +61,7 @@ if (OS_IOS) {
 		bottom: 0,
 		height: 100
 	})
-	var bannerAd = Admob.createAdaptativeBanner({
+	var bannerAd = Admob.createAdaptiveBanner({
 		bottom: 0,
 		width: "100%",
 		height: 100,
@@ -79,11 +79,11 @@ if (OS_IOS) {
 		$.testAdsWin.add(v);
 	}, 2000);	
 
-	bannerAd.addEventListener(Admob.AD_RECEIVED, function (e) {
-		console.debug("Banner Ad received");
+	bannerAd.addEventListener(Admob.AD_LOADED, function (e) {
+		console.debug("Banner Ad loaded");
 	});
-	bannerAd.addEventListener(Admob.AD_NOT_RECEIVED, function (e) {
-		console.debug("Banner Ad failed");
+	bannerAd.addEventListener(Admob.AD_FAILED_TO_LOAD, function (e) {
+		console.debug("Banner Ad failed to load");
 		console.error(JSON.stringify(e));
 	});
 	bannerAd.addEventListener(Admob.AD_DESTROYED, function (e) {
@@ -150,12 +150,12 @@ if (OS_IOS) {
 			adUnitId: 'ca-app-pub-3940256099942544/1033173712', //USE YOUR AD_UNIT ID HERE
 		});
 
-		interstitialAd.addEventListener(Admob.AD_RECEIVED, function (e) {
-			console.debug("Interstital Ad Received");
+		interstitialAd.addEventListener(Admob.AD_LOADED, function (e) {
+			console.debug("Interstital Ad loaded");
 			$.interstitialButton.title = "Show interstitial Ad";
 		});
-		interstitialAd.addEventListener(Admob.AD_NOT_RECEIVED, function (e) {
-			console.error("Interstital Ad failed");
+		interstitialAd.addEventListener(Admob.AD_FAILED_TO_LOAD, function (e) {
+			console.error("Interstital Ad failed to load");
 			console.debug(JSON.stringify(e));
 			$.interstitialButton.title = "Load interstitial Ad";
 		});
@@ -177,6 +177,9 @@ if (OS_IOS) {
 		});
 		interstitialAd.addEventListener(Admob.AD_SHOWED_FULLSCREEN_CONTENT, function (e) {
 			console.debug("Fullscreen showed ads successfully - Loading Screen");
+		});
+		interstitialAd.addEventListener(Admob.AD_CLICKED, function (e) {
+			console.debug("Interstital Ad ckicked");
 		});
 		
 	}, 2000);
@@ -271,24 +274,19 @@ if (OS_IOS) {
 			extras: {}
 		});
 
-		function AD_RECEIVED(e) {
-			console.debug("Rewarded Ad AD_RECEIVED");
-			enableRewardedVideoButton();
-			androidRewardedLoaded = true;
-		};
-		function AD_NOT_RECEIVED(e) {
-			console.debug("Rewarded Ad AD_NOT_RECEIVED");
-			disableRewardedVideoButton();
-		};
-		function AD_DESTROYED(e) {
-			console.debug("Rewarded Ad AD_DESTROYED");
-			disableRewardedVideoButton();
-		};
 		function AD_LOADED(e) {
 			console.debug("Rewarded Ad AD_LOADED");
 			enableRewardedVideoButton();
 			androidRewardedLoaded = true;
 		};
+		function AD_FAILED_TO_LOAD(e) {
+			console.debug("Rewarded Ad AD_FAILED_TO_LOAD");
+			disableRewardedVideoButton();
+		};
+		function AD_DESTROYED(e) {
+			console.debug("Rewarded Ad AD_DESTROYED");
+			disableRewardedVideoButton();
+		};		
 		function AD_CLOSED(e) {
 			console.debug("Rewarded Ad AD_CLOSED");
 			disableRewardedVideoButton();
@@ -309,10 +307,9 @@ if (OS_IOS) {
 		};
 
 		function addAdEventListeners() {			
-			rewarded.addEventListener(Admob.AD_RECEIVED, AD_RECEIVED);
-			rewarded.addEventListener(Admob.AD_NOT_RECEIVED, AD_NOT_RECEIVED);
-			rewarded.addEventListener(Admob.AD_DESTROYED, AD_DESTROYED);
 			rewarded.addEventListener(Admob.AD_LOADED, AD_LOADED);
+			rewarded.addEventListener(Admob.AD_FAILED_TO_LOAD, AD_FAILED_TO_LOAD);
+			rewarded.addEventListener(Admob.AD_DESTROYED, AD_DESTROYED);
 			rewarded.addEventListener(Admob.AD_CLOSED, AD_CLOSED);
 			rewarded.addEventListener(Admob.AD_REWARDED, AD_REWARDED);
 			rewarded.addEventListener(Admob.AD_FAILED_TO_SHOW, AD_FAILED_TO_SHOW);

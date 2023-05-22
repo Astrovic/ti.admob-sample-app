@@ -23,5 +23,5 @@ repositories {
 
 dependencies {  
 	implementation 'com.google.ads.mediation:facebook:6.14.0.0'	
-	implementation 'com.google.ads.mediation:pangle:5.1.0.6.0'
+	implementation 'com.google.ads.mediation:pangle:5.1.0.9.0'
 }

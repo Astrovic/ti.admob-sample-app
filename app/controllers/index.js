@@ -253,8 +253,8 @@ function checkConsent() {
             });
             $.index.add(adView);
 
-            adView.addEventListener(Admob.AD_RECEIVED, function (e) {
-                Titanium.API.info("Ad received");
+            adView.addEventListener(Admob.AD_LOADED, function (e) {
+                Titanium.API.info("Ad loaded");
                 console.debug(e);
                 setTimeout(() => {
                     $.index.remove(adView);
@@ -263,8 +263,8 @@ function checkConsent() {
                 }, 2000);
             });
 
-            adView.addEventListener(Admob.AD_NOT_RECEIVED, function (e) {
-                Titanium.API.info("Ad failed");
+            adView.addEventListener(Admob.AD_FAILED_TO_LOAD, function (e) {
+                Titanium.API.info("Ad failed to load");
                 console.error(e);
                 $.index.remove(adView);
                 adView = null;

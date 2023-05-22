@@ -49,7 +49,7 @@ interstitialAd.addEventListener(Admob.AD_CLOSED, function () {
     showInterstitialAdButton.touchEnabled = false;
     interstitialAd.load();
 });
-interstitialAd.addEventListener(Admob.AD_RECEIVED, function () {
+interstitialAd.addEventListener(Admob.AD_LOADED, function () {
     // When a new Interstitial ad is loaded, enabled the button.
     Ti.API.info('Interstitial Ad loaded!');
     showInterstitialAdButton.enabled = true;
@@ -70,7 +70,7 @@ interstitialAd.addEventListener(Admob.AD_LEFT_APPLICATION, function () {
 interstitialAd.load();
 
 //listener for adReceived
-adMobView.addEventListener(Admob.AD_RECEIVED,function(){
+adMobView.addEventListener(Admob.AD_LOADED,function(){
    // alert("ad received");
    Ti.API.info("ad received");
 });

@@ -77,7 +77,7 @@ var interstitialAd = Admob.createInterstitialAd({ adUnitId:&quot;ca-app-pub-3940
 interstitialAd.addEventListener(Admob.AD_CLOSED, function () {
     Ti.API.info(&#39;Interstitial Ad closed!&#39;);
 });
-interstitialAd.addEventListener(Admob.AD_RECEIVED, function () {
+interstitialAd.addEventListener(Admob.AD_LOADED, function () {
     // When a new Interstitial ad is loaded, show it.
     Ti.API.info(&#39;Interstitial Ad loaded!&#39;);
     interstitialAd.show();
