@@ -162,11 +162,7 @@ if (OS_IOS) {
 		interstitialAd.addEventListener(Admob.AD_DESTROYED, function (e) {
 			console.error("Interstital Ad destroyed");
 			$.interstitialButton.title = "Load interstitial Ad";
-		});
-		interstitialAd.addEventListener(Admob.AD_LOADED, function (e) {
-			console.debug("Interstital Ad Loaded");
-			$.interstitialButton.title = "Show interstitial Ad";
-		});		
+		});	
 		interstitialAd.addEventListener(Admob.AD_CLOSED, function (e) {
 			console.debug("Interstital ad close successfully. RIP!");
 			$.interstitialButton.title = "Load interstitial Ad";
