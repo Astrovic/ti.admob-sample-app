@@ -1,4 +1,4 @@
-var Admob;
+let Admob;
 if (OS_IOS) {
 	Admob = require('ti.admob');
 	if (Admob.trackingAuthorizationStatus === Admob.TRACKING_AUTHORIZATION_STATUS_AUTHORIZED) {
@@ -13,7 +13,7 @@ if (OS_IOS) {
 
 if (OS_IOS) {
 	/* Banner ads */
-	var bannerAdView = Admob.createView({
+	let bannerAdView = Admob.createView({
 		debugEnabled: false,
 		height: 100,
 		bottom: 50,
@@ -57,16 +57,22 @@ if (OS_IOS) {
 		console.debug('BannerAdView - Presenting screen!' + e.adUnitId);
 	});
 } else {
-	var v = Ti.UI.createView({
+	let v = Ti.UI.createView({
 		bottom: 0,
 		height: 100
 	})
-	var bannerAd = Admob.createAdaptiveBanner({
+	let bannerAd = Admob.createBanner({
 		bottom: 0,
 		width: "100%",
 		height: 100,
 		viewType: Admob.TYPE_ADS,
-		adSizeType: Admob.BANNER, // LARGE_BANNER, SMART_BANNER, MEDIUM_RECTANGLE, FULLBANNER, LEADERBOARD
+		// You can use the supported adView sizes: BANNER, LARGE_BANNER, SMART_BANNER, MEDIUM_RECTANGLE, FULLBANNER, LEADERBOARD
+		//adSizeType: Admob.BANNER,
+		// OR a custom size, like this:
+		customAdSize: {
+		    height: 100,
+		    width: parseInt(Ti.Platform.displayCaps.platformWidth / Ti.Platform.displayCaps.logicalDensityFactor)
+		},
 		adUnitId: 'ca-app-pub-3940256099942544/9214589741',
 		extras: {
 			'npa': 1
@@ -99,7 +105,7 @@ if (OS_IOS) {
 
 /* interstitial Ads */
 if (OS_IOS) {
-	var interstitialAd = Admob.createView({
+	let interstitialAd = Admob.createView({
 		debugEnabled: false, // If enabled, a dummy value for `adUnitId` will be used to test
 		adType: Admob.AD_TYPE_INTERSTITIAL,
 		adUnitId: 'ca-app-pub-3940256099942544/4411468910', // You can get your own at http: //www.admob.com/
@@ -141,7 +147,7 @@ if (OS_IOS) {
 		console.debug(e);
 	});
 } else {
-	var interstitialAd;
+	let interstitialAd;
 	setTimeout(() => {
 		interstitialAd = Admob.createInterstitial({
 			viewType: Admob.TYPE_ADS,
@@ -202,7 +208,7 @@ function showInterstitial() {
 
 /* Rewarded Video Ads */
 if (OS_IOS) {
-	var rewardedVideo = Admob.createView({
+	let rewardedVideo = Admob.createView({
 		debugEnabled: false,
 		adType: Admob.AD_TYPE_REWARDED_VIDEO,
 		adUnitId: 'ca-app-pub-3940256099942544/1712485313',
@@ -259,8 +265,8 @@ if (OS_IOS) {
 		disableRewardedVideoButton();
 	});
 } else {
-	var rewarded;
-	var androidRewardedLoaded = false;
+	let rewarded;
+	let androidRewardedLoaded = false;
 	setTimeout(() => {
 		rewarded = Admob.createRewarded({
 			viewType: Admob.TYPE_ADS,
@@ -360,6 +366,91 @@ function enableRewardedVideoButton() {
 	}, 10);
 }
 
+/* OpenApp Ad */
+let appOpenAd;
+function loadOpenAd() {
+	const reload_max_tries_case_error = 4;
+	let reload_max_tries = 0;
+
+	appOpenAd = Admob.createAppOpenAd({
+		adUnitId: "ca-app-pub-3940256099942544/3419835294", //USE YOUR AD_UNIT
+	});
+
+	appOpenAd.addEventListener(Admob.AD_FAILED_TO_SHOW, function (e) {
+		Titanium.API.error("======================== AppOpenAd - Failed to show ads ========================");
+		Titanium.API.warn({
+			"message": e.message,
+			"cause": e.cause,
+			"code": e.code
+		});
+	});
+
+	appOpenAd.addEventListener(Admob.AD_SHOWED_FULLSCREEN_CONTENT, function () {
+		Titanium.API.info("======================== AppOpenAd - showed ads successfully ========================");
+	});
+
+	appOpenAd.addEventListener(Admob.AD_FAILED_TO_LOAD, function (e) {
+		Titanium.API.error("======================== AppOpenAd - failed to load ads ========================");
+		Titanium.API.warn({
+			"message": e.message,
+			"reason": e.reason,
+			"cause": e.cause,
+			"code": e.code
+		});
+
+		if (reload_max_tries < reload_max_tries_case_error) {
+			appOpenAd.load();
+		}
+
+		reload_max_tries += 1;
+	});
+
+	appOpenAd.addEventListener(Admob.AD_LOADED, function (e) {
+		Titanium.API.warn("======================== AppOpenAd - Ads Loaded and ready ========================");
+		reload_max_tries = 0;
+		Titanium.App.Properties.setDouble('appOpenAdLoadTime', (new Date().getTime()));
+	});
+
+	appOpenAd.addEventListener(Admob.AD_CLOSED, function (e) {
+		Titanium.API.warn("======================== AppOpenAd ad - CLOSED ========================");
+		Titanium.App.Properties.setDouble('lastTimeAppOpenAdWasShown', (new Date().getTime()));
+		appOpenAd.load();
+	});
+
+	appOpenAd.addEventListener(Admob.AD_NOT_READY, function (e) {
+		Titanium.API.warn("======================== AppOpenAd ad - AD_NOT_READY ========================");
+		Titanium.API.warn(e.message);
+	});
+}
+
+function resumeOpenAd() {
+	let currentTime = (new Date().getTime());
+	let loadTime = Titanium.App.Properties.getDouble('appOpenAdLoadTime', currentTime);
+	let lastTimeAppOpenAdWasShown = Titanium.App.Properties.getDouble('lastTimeAppOpenAdWasShown', 1);
+
+	if ((currentTime - loadTime) < 14400000) { // then less than 4 hours elapsed.
+		if ((currentTime - lastTimeAppOpenAdWasShown) > 600000) { // then more than 10 minutes elapsed after the last Ad showed.
+			appOpenAd.show();
+		} else {
+			Titanium.API.warn("You have showned an AppOpenAd less than 10 minutes ago. You should wait!");
+		}
+	} else {
+		Titanium.API.warn("The AppOpenAd was requested more than 4 hours ago and has expired! You should load another one.");
+		Titanium.App.removeEventListener('resume', resumeOpenAd);
+		setTimeout(() => {
+			loadOpenAd();
+			Titanium.App.addEventListener('resume', resumeOpenAd);
+		}, 500);
+	}
+}
+if (OS_ANDROID) {
+	loadOpenAd();
+	Titanium.App.addEventListener('resume', resumeOpenAd);
+}
+
 function closeWin() {
+	if (OS_ANDROID) {
+		Titanium.App.removeEventListener('resume', resumeOpenAd);
+	}
 	$.testAdsWin.close();
 }

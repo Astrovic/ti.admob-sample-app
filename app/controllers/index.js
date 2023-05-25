@@ -239,7 +239,7 @@ function checkConsent() {
                 alert("Authorization not granted! Decide what to do ...");                     
             });
         } else {
-            var adView = Admob.createBanner({
+            var adView = Admob.createAdaptiveBanner({
                 bottom: 0,
                 //keyword : "titanium",
                 //contentUrl : "www.myur.com",
@@ -247,7 +247,9 @@ function checkConsent() {
                     //'npa': '1' //Disable personalized ads
                 },
                 viewType: Admob.TYPE_ADS,
-                adSizeType: Admob.BANNER,
+                //adSizeType: Admob.BANNER,
+                adaptiveType: Admob.ADAPTIVE_INLINE, // or Admob.ADAPTIVE_ANCHORED
+                maxHeight: 50, // ONLY IF adaptiveType is Admob.ADAPTIVE_INLINE, maxHeight must be set. Default value is 50
                 testDeviceId: "4E9D70AA851097F0E3F3D0486FDBF60B", //USE YOUR DEVICE ID HERE
                 adUnitId: 'ca-app-pub-3940256099942544/6300978111', //USE YOUR AD_UNIT ID HERE               
             });

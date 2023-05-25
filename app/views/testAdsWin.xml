@@ -1,11 +1,12 @@
 <Alloy>
 	<Window class="container">
-		<View layout="vertical">
+		<ScrollView layout="vertical">
 			<Label top="70" width="80%" textAlign="center">Loading the ads now! Note that there may be a several minute delay if you have not viewed an ad in over 24 hours.</Label>
+			<Label top="20" width="80%" textAlign="center" platform="android">Resume the app to show OpenApp ad</Label>
 			<Button top="50" id="interstitialButton" onClick="showInterstitial" title="Load interstitial Ad" />
 			<Button top="20" id="rewardedVideoButton" onClick="showRewarded" title="Load Rewarded Video Ad" />
 			<Button top="20" platform="android" onClick="showMediationTestSuite" title="Show Mediation Test Suite" />
 			<Button top="60" onClick="closeWin">Close</Button>
-		</View>
+		</ScrollView>
 	</Window>
 </Alloy>
