@@ -227,7 +227,7 @@ function checkConsent() {
                 bannerAdView.removeEventListener('didReceiveAd', arguments.callee);
                 $.index.remove(bannerAdView);
                 bannerAdView = null;
-                console.debug('bannerAdView - Did receive ad!');
+                console.debug('bannerAdView - Did receive ad: ' + e.adUnitId);
                 openTestAdsWin();
             });
             bannerAdView.addEventListener('didFailToReceiveAd', function (e) {
