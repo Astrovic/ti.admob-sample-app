@@ -21,14 +21,16 @@ if (OS_IOS) {
 		adUnitId: 'ca-app-pub-3940256099942544/2934735716', // You can get your own at http: //www.admob.com/
 		adBackgroundColor: 'black',
 		// You can get your device's id for testDevices by looking in the console log after the app launched
-		testDevices: ["74AADF66-C4CA-4961-9839-C78815E056EB", Admob.SIMULATOR_ID],
+		//testDevices: ["74AADF66-C4CA-4961-9839-C78815E056EB"],
 		contentURL: 'https://admob.com', // URL string for a webpage whose content matches the app content.
 		requestAgent: 'Titanium Mobile App', // String that identifies the ad request's origin.
 		extras: {
 			'version': 1.0,
 			'name': 'My App'
-		}, // Object of additional infos
-		tagForChildDirectedTreatment: false, // http:///business.ftc.gov/privacy-and-security/childrens-privacy for more infos
+		}, // Object of additional infos		
+		tagForChildDirectedTreatment: false, // https://developers.google.com/admob/ios/targeting#child-directed_setting for more infos
+    	tagForUnderAgeOfConsent: false, //https://developers.google.com/admob/ios/targeting#users_under_the_age_of_consent for more infos
+		maxAdContentRating: Admob.MAX_AD_CONTENT_RATING_GENERAL, // https://developers.google.com/admob/ios/targeting#ad_content_filtering for more infos
 		keywords: ['keyword1', 'keyword2']
 	});
 	setTimeout(() => {
@@ -118,7 +120,10 @@ if (OS_IOS) {
 			'version': 1.0,
 			'name': 'My App'
 		}, // Object of additional infos
-		visible: false // If true, covers the win when added and can't tap nothing
+		visible: false, // If true, covers the win when added and can't tap nothing
+		tagForChildDirectedTreatment: false, // https://developers.google.com/admob/ios/targeting#child-directed_setting for more infos
+		tagForUnderAgeOfConsent: false, //https://developers.google.com/admob/ios/targeting#users_under_the_age_of_consent for more infos
+		maxAdContentRating: Admob.MAX_AD_CONTENT_RATING_GENERAL, // https://developers.google.com/admob/ios/targeting#ad_content_filtering for more infos
 	});
 	interstitialAd.addEventListener('didReceiveAd', function (e) {
 		console.debug('interstitialAd - didReceiveAd: Did receive ad: ' + e.adUnitId);
@@ -215,7 +220,10 @@ if (OS_IOS) {
 		extras: {
 			'version': 1.0,
 			'name': 'My App'
-		} // Object of additional infos
+		}, // Object of additional infos
+		tagForChildDirectedTreatment: false, // https://developers.google.com/admob/ios/targeting#child-directed_setting for more infos
+		tagForUnderAgeOfConsent: false, //https://developers.google.com/admob/ios/targeting#users_under_the_age_of_consent for more infos
+		maxAdContentRating: Admob.MAX_AD_CONTENT_RATING_GENERAL, // https://developers.google.com/admob/ios/targeting#ad_content_filtering for more infos
 	});	
 	
 	rewardedVideo.addEventListener('didRewardUser', function (reward) {
@@ -378,11 +386,14 @@ function loadOpenAd() {
 		appOpenAd = Admob.createView({
 			debugEnabled: false,
 			adType: Admob.AD_TYPE_APP_OPEN,
-			adUnitId: 'ca-app-pub-3940256099942544/5662855259', // You can get your own at http: //www.admob.com/
+			adUnitId: 'ca-app-pub-3940256099942544/5575463023', // You can get your own at http: //www.admob.com/
 			extras: {
 				'version': 1.0,
 				'name': 'My App'
-			} // Object of additional infos
+			}, // Object of additional infos
+			tagForChildDirectedTreatment: false, // https://developers.google.com/admob/ios/targeting#child-directed_setting for more infos
+			tagForUnderAgeOfConsent: false, //https://developers.google.com/admob/ios/targeting#users_under_the_age_of_consent for more infos
+			maxAdContentRating: Admob.MAX_AD_CONTENT_RATING_GENERAL, // https://developers.google.com/admob/ios/targeting#ad_content_filtering for more infos
 		});		
 		
 		// appOpenAd custom events

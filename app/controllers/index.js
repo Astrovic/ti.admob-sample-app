@@ -93,7 +93,7 @@ function requestConsent() {
     if (OS_IOS) {
         console.debug("request consent");
         Admob.requestConsentInfoUpdateWithParameters({
-            testDeviceIdentifiers: [Admob.SIMULATOR_ID, '74AADF66-C4CA-4961-9839-C78815E056EB'],
+            testDeviceIdentifiers: ['74AADF66-C4CA-4961-9839-C78815E056EB'],
             geography: Admob.DEBUG_GEOGRAPHY_EEA,
             tagForUnderAgeOfConsent: false,
             callback: function (e) {
@@ -123,10 +123,17 @@ function requestConsent() {
                             if (e.dismissError || e.loadError) {
                                 alert(e.dismissError || e.loadError);
                                 return;
-                            }
+                            }                            
                             // If the status is "obtained" (freshly granted) or not required (already granted) continue
                             if ([Admob.CONSENT_STATUS_NOT_REQUIRED, Admob.CONSENT_STATUS_OBTAINED].includes(e.status)) {
-                                checkConsent();
+                                //checkConsent();
+                                if (Admob.canShowAds()) {
+                                    openTestAdsWin();
+                                } else {
+                                    alert('You have not granted at least the minimum requirements to show ads!\n' +
+                                        'No fear! You can buy an in-app purchase to use the app without ads :)');
+                                    Admob.resetConsent(); // reset permissions to show UMP form again
+                                }
                             } else {
                                 alert('Not ready to show ads! Status = ' + e.status);
                             }
@@ -134,7 +141,8 @@ function requestConsent() {
                     })
                 } else {
                     console.debug("No consent form is available");
-                    checkConsent();
+                    //checkConsent();
+                    openTestAdsWin();
                 }
             }
         });
@@ -220,7 +228,9 @@ function checkConsent() {
                 contentURL: 'https://admob.com', // URL string for a webpage whose content matches the app content.
                 requestAgent: 'Titanium Mobile App', // String that identifies the ad request's origin.
                 extras: {}, // Object of additional infos
-                tagForChildDirectedTreatment: false // http:///business.ftc.gov/privacy-and-security/childrens-privacy for more infos								
+                tagForChildDirectedTreatment: false, // https://developers.google.com/admob/ios/targeting#child-directed_setting for more infos
+                tagForUnderAgeOfConsent: false, //https://developers.google.com/admob/ios/targeting#users_under_the_age_of_consent for more infos
+                maxAdContentRating: Admob.MAX_AD_CONTENT_RATING_GENERAL, // https://developers.google.com/admob/ios/targeting#ad_content_filtering for more infos
             });
             $.index.add(bannerAdView);
             bannerAdView.addEventListener('didReceiveAd', function (e) {
