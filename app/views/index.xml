@@ -1,6 +1,10 @@
 <Alloy>
 	<Window class="container" layout="vertical" onOpen="onOpen">
-		<Button top="70" id="label" onClick="loadConsentForm">Load Consent Form</Button>
-		<Button top="20" onClick="resetConsent">Reset Consent</Button>
+		<Label top="70" text="Current Debug Region:" />
+		<OptionBar top="10" id="debugRegionOptionBar" onClick="chooseDebugRegion" />		
+		<Button top="40" onClick="loadConsentForm" backgroundColor="green">Load Consent Form</Button>
+		<Button top="20" id="checkPrivacyOptionsButton" onClick="checkPrivacyOptions" enabled="false" backgroundColor="red">Check Privacy Options</Button>
+		<Button top="20" id="resetConsentButton" onClick="resetConsent" enabled="false" backgroundColor="red">Reset Consent</Button>		
+		<Button top="20" id="testAdsWinButton" onClick="openTestAdsWin" enabled="false" backgroundColor="red">Open Test Ads</Button>
 	</Window>
 </Alloy>

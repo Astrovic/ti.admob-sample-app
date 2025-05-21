@@ -344,13 +344,6 @@ function showRewarded() {
 	}
 };
 
-function showMediationTestSuite() {
-	if (OS_ANDROID) {
-		console.log("showMediationTestSuite!!!");		
-		Admob.showMediationTestSuite();
-	}
-}
-
 function disableRewardedVideoButton() {
 	setTimeout(() => {
 		$.rewardedVideoButton.title = "Load Rewarded Video Ad";
@@ -435,7 +428,7 @@ function loadOpenAd() {
 		appOpenAd.receive();
 	} else {
 		appOpenAd = Admob.createAppOpenAd({
-			adUnitId: "ca-app-pub-3940256099942544/3419835294", //USE YOUR AD_UNIT
+			adUnitId: "ca-app-pub-3940256099942544/9257395921", //USE YOUR AD_UNIT
 		});
 
 		appOpenAd.addEventListener(Admob.AD_FAILED_TO_SHOW, function (e) {
