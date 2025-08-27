@@ -16,3 +16,7 @@
 	color: "white",
 	width: "90%"
 }
+
+"OptionBar": {
+	color: 'gray'
+}

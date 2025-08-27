@@ -22,8 +22,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.google.ads.mediation:inmobi:10.8.3.0'
+    implementation 'com.google.ads.mediation:inmobi:10.8.7.0'
 	implementation 'com.google.ads.mediation:facebook:6.20.0.0'	
-	implementation 'com.google.ads.mediation:pangle:6.5.0.8.0'
-    implementation 'com.google.ads.mediation:applovin:13.2.0.1' 
+	implementation 'com.google.ads.mediation:pangle:7.5.0.2.0'
+    implementation 'com.google.ads.mediation:applovin:13.3.1.1'
 }

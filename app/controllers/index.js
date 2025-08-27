@@ -3,7 +3,7 @@ if (OS_IOS) {
     Admob = require('ti.admob');
 } else {
     Admob = require("ti.android.admob");
-    Admob.setTestDeviceId("75D3684B4D6F191FCDBD9CC319FFD373"); //USE YOUR DEVICE ID HERE
+    Admob.setTestDeviceId("AD119416FA7E9487D4E1EDDE07856B7D"); //USE YOUR DEVICE ID HERE
 }
 
 $.debugRegionOptionBar.labels = ['EEA', 'REGULATED_US_STATE', 'OTHER', ];

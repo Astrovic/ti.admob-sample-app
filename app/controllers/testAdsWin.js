@@ -211,7 +211,7 @@ function showInterstitial() {
 };
 
 /* Rewarded Video Ads */
-let rewardedVideo, rewarded;
+let rewardedVideo, rewarded, androidRewardedLoaded;
 if (OS_IOS) {
 	rewardedVideo = Admob.createView({
 		debugEnabled: false,
@@ -263,7 +263,7 @@ if (OS_IOS) {
 		disableRewardedVideoButton();
 	});
 } else {	
-	let androidRewardedLoaded = false;
+	androidRewardedLoaded = false;
 	setTimeout(() => {
 		rewarded = Admob.createRewarded({
 			viewType: Admob.TYPE_ADS,
