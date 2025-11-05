@@ -1,0 +1,51 @@
+".container": {
+	backgroundColor: "#fff"
+},
+
+"ScrollView": {
+	layout: "vertical",
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	contentHeight: Ti.UI.SIZE,
+	bottom: 200,
+	showVerticalScrollIndicator: true
+},
+
+"Label": {
+	width: "90%",
+	color: "#222",
+	font: { fontSize: "14sp" },
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	top: 10
+},
+
+"Button": {
+	width: "90%",
+	height: 44,
+	borderRadius: 22,
+	backgroundColor: "#1967d2",
+	color: "#fff",
+	font: { fontSize: "15sp", fontWeight: "bold" },
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	top: 15
+},
+
+"#interstitialButton": {
+	backgroundColor: "#4caf50" /* green */
+},
+
+"#rewardedVideoButton": {
+	backgroundColor: "#2196f3" /* blue */
+},
+
+"Button[title='Close']": {
+	backgroundColor: "#e53935" /* red */
+},
+
+"Window": {
+	backgroundColor: "#fafafa"
+}
+
+"Window[platform=ios]": {
+	statusBarStyle: Ti.UI.iOS.StatusBar.LIGHT_CONTENT
+}

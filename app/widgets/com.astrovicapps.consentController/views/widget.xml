@@ -1,0 +1,31 @@
+<Alloy>
+    <Window id="win" title="" onAndroidback="onAndroidback" backgroundColor="#ee333333">
+
+       <ActivityIndicator style="Titanium.UI.ActivityIndicatorStyle.BIG" indicatorColor="#fff" visible="true"/>
+
+        <!-- INTRODUCTIVE VIEW -->
+        <View id="consentView" class="viewContainer" visible="false">
+            <View class="messagesContainer" bottom="160" >
+                <ImageView class="appIcon" image="/appicon.png"/>
+                <Label id="consentMsg1Lbl" class="h2" text="" top="30" />
+                <Label id="consentMsg2Lbl" class="h4" text="" />
+            </View>
+            <View class="buttonsView">
+              <Button id="continueBtn" class="roundedButton" backgroundColor="#1967d2" title="L(continue_btn)" onClick="continueBtnClick" top="30"/>
+              <Button id="purchaseBtn" class="roundedButton" backgroundColor="#333" title="L(purchase_btn)" visible="false" onClick="purchase" top="10"/>
+            </View>
+        </View>
+
+        <!-- VIEW ATT -->
+        <View id="AttView" class="viewContainer" visible="false">
+            <View class="messagesContainer" bottom="100" >
+                <ImageView class="appIcon" image="/appicon.png"/>
+                <Label id="ATTMsg1Lbl" class="h2" text="" top="30" />
+                <Label id="ATTMsg2Lbl" class="h4" text="" />
+            </View>
+            <View class="buttonsView">
+              <Button id="ATTContinueBtn" class="roundedButton" backgroundColor="#1967d2" title="L(continue_btn)" top="30"/>
+            </View>
+        </View>
+    </Window>
+</Alloy>

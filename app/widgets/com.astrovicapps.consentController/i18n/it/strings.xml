@@ -1,0 +1,10 @@
+<resources>
+    <string name="consentMsg1Lbl">Teniamo alla tua privacy e alla protezione dei tuoi dati.</string>
+    <string name="consentMsg2Lbl">Rivedi e personalizza le tue preferenze sui consensi pubblicitari.</string>
+    <string name="consentMsg3Lbl">Hai negato il consenso agli annunci. Puoi acquistare la versione senza pubblicità qui sotto.</string>
+    <string name="tracking_msg_1">Questa app utilizza il tracking per migliorare la tua esperienza.</string>
+    <string name="tracking_msg_2">Ti verrà chiesto il permesso di tracciare la tua attività su altre app.</string>
+    <string name="cancel">Annulla</string>
+    <string name="purchase_btn">Rimuovi Ads</string>
+    <string name="continue_btn">Continua</string>
+</resources>

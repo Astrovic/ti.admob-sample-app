@@ -1,10 +1,12 @@
 <Alloy>
-	<Window class="container" layout="vertical" onOpen="onOpen">
-		<Label top="70" text="Current Debug Region:" />
-		<OptionBar top="10" id="debugRegionOptionBar" onClick="chooseDebugRegion" />		
-		<Button top="40" onClick="loadConsentForm" backgroundColor="green">Load Consent Form</Button>
-		<Button top="20" id="checkPrivacyOptionsButton" onClick="checkPrivacyOptions" enabled="false" backgroundColor="red">Check Privacy Options</Button>
-		<Button top="20" id="resetConsentButton" onClick="resetConsent" enabled="false" backgroundColor="red">Reset Consent</Button>		
-		<Button top="20" id="testAdsWinButton" onClick="openTestAdsWin" enabled="false" backgroundColor="red">Open Test Ads</Button>
-	</Window>
+  <Widget id="consentWidget" src="com.astrovicapps.consentController" />
+  <Window class="container" layout="vertical" >    
+    <Label top="40" text="Demo consentController" font.fontSize="20" font.fontWeight="bold" />
+	  <OptionBar top="20" id="debugRegionOptionBar" onClick="chooseDebugRegion" />
+    <Button id="btnStart" top="20" onClick="startAppSim" backgroundColor="green">Simule app start (init)</Button>
+    <Button id="btnPrivacy" top="20" onClick="openPrivacyOptionsSim" enabled="false" backgroundColor="red">Open privacy options</Button>
+    <Button id="btnReset" top="20" onClick="resetForTest" enabled="false" backgroundColor="red">Reset consent (test)</Button>
+	  <Button top="20" id="testAdsWinButton" onClick="openTestAdsWin" enabled="false" backgroundColor="red">Open Test Ads</Button>
+    <Label id="status" text="" top="40" color="#333" width="90%" textAlign="center" />
+  </Window>
 </Alloy>

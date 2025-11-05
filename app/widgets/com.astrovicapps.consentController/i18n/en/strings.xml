@@ -1,0 +1,10 @@
+<resources>    
+    <string name="consentMsg1Lbl">We care about your privacy and data protection.</string>
+    <string name="consentMsg2Lbl">Please review and customize your ad preferences.</string>
+    <string name="consentMsg3Lbl">You have denied ad consent. You can purchase the ad-free version below.</string>
+    <string name="tracking_msg_1">This app uses tracking to improve your experience.</string>
+    <string name="tracking_msg_2">We will ask for permission to track your activity across apps.</string>
+    <string name="cancel">Cancel</string>
+    <string name="purchase_btn">Remove Ads</string>
+    <string name="continue_btn">Continue</string>
+</resources>

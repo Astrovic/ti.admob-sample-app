@@ -7,5 +7,8 @@
 			<Button top="20" id="rewardedVideoButton" onClick="showRewarded" title="Load Rewarded Video Ad" />
 			<Button top="60" onClick="closeWin">Close</Button>
 		</ScrollView>
+		<View id="bannerContainerView" height="100" width="100%" bottom="0" backgroundColor="#ee333333">
+			<Label color="#fff">ADV loading...</Label>
+		</View>
 	</Window>
 </Alloy>

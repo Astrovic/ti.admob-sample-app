@@ -1,0 +1,49 @@
+".viewContainer": {
+  height : Ti.UI.SIZE,
+	width: "90%",
+	borderRadius: 15,
+	backgroundColor: "#fff"
+},
+".h2": {
+    font: { fontSize: "16sp", fontWeight: "bold" },
+    color: "#000",
+    textAlign: "center"
+},
+".h4": {
+    font: { fontSize: "14sp" },
+    color: "#333",
+    textAlign: "center",
+    top: 10
+},
+'.messagesContainer': {
+  layout: "vertical",
+  height: Ti.UI.SIZE,
+	top: 10,
+	left: 20,
+	right: 20	
+},
+'.appIcon': {
+	top: 30,
+	height: 70,
+	width: 70	
+}
+'.buttonsView': {
+  layout: 'vertical',
+  height: Ti.UI.SIZE,
+  bottom: 20,  
+  width: '100%'
+},
+'.roundedButton': {
+  color: '#fff',
+  left: 20,
+  right: 20,
+  height: 40,
+  top: 10,
+  borderRadius: 20,
+  backgroundColor: "#1967d2",
+  font : {
+    fontSize: '14sp',
+    fontWeight: 'bold'
+  },
+  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
+}
