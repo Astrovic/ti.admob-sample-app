@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
 	<id>it.astrovicApps.admobTest</id>
 	<name>AdMobTest</name>
-	<version>6.0.0</version>
+	<version>6.1.0</version>
 	<publisher>not specified</publisher>
 	<url>AstrovicApps</url>
 	<description />

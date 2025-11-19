@@ -1,7 +1,7 @@
 {
   "id": "com.astrovicapps.consentController",
   "name": "AdMob Consent Controller",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Universal Titanium SDK Alloy widget for managing AdMob Consent & ATT handler for iOS and Android (UMP-based)",
   "author": "Astrovic",
   "license": "MIT",

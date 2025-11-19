@@ -7,6 +7,6 @@
 	"os:ios": {},
 	"os:windows": {},
 	"dependencies": {
-		"com.astrovicapps.consentController": "1.0.0"
+		"com.astrovicapps.consentController": "1.1.0"
 	}
 }
